@@ -10,14 +10,24 @@ import { DASHBOARD_NAVIGATION } from "@/constants/dashboard";
 import { logout, refreshSession } from "@/store/authSlice";
 import { contentApi } from "@/lib/authApi";
 
+
 const DashboardLayoutContext = createContext(null);
+
+const defaultContextValue = {
+  expanded: true,
+  mobileOpen: false,
+  loggingOut: false,
+  ngoSetting: null,
+  refreshNgoSetting: async () => {},
+  closeMobileNavigation: () => {},
+  openMobileNavigation: () => {},
+  toggleExpanded: () => {},
+  signOut: async () => {},
+};
 
 export function useDashboardLayout() {
   const context = useContext(DashboardLayoutContext);
-  if (!context) {
-    throw new Error("useDashboardLayout must be used inside the dashboard layout.");
-  }
-  return context;
+  return context || defaultContextValue;
 }
 
 function LoadingScreen() {
@@ -31,6 +41,8 @@ function LoadingScreen() {
   );
 }
 
+const AUTH_ROUTES = ["/login", "/register", "/forgot-password", "/reset-password"];
+
 export default function DashboardLayout({ children }) {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -40,7 +52,10 @@ export default function DashboardLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [ngoSetting, setNgoSetting] = useState(null);
-  const isDashboardRoute = DASHBOARD_NAVIGATION.some(({ href }) => href === pathname);
+  const isAuthRoute = Boolean(
+    pathname && AUTH_ROUTES.some((route) => pathname === route || pathname.startsWith(route + "/"))
+  );
+  const isDashboardRoute = !isAuthRoute && pathname !== "/";
 
   const fetchNgoSetting = useCallback(async () => {
     try {

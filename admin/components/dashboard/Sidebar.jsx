@@ -40,20 +40,26 @@ export default function Sidebar() {
           {expanded ? "WORKSPACE" : "MENU"}
         </p> */}
         <nav aria-label="Dashboard navigation" className="grid gap-1.5">
-          {DASHBOARD_NAVIGATION.map(({ label, href, icon: Icon }) => (
-            <Link
-              aria-current={pathname === href ? "page" : undefined}
-              aria-label={label}
-              className={`flex h-10.5 w-full items-center gap-2 rounded-lg text-left transition ${pathname === href ? "bg-[#254350] text-white shadow-[inset_3px_0_#ef754b]" : "text-slate-400 hover:bg-white/5 hover:text-white"} ${expanded ? "px-4" : "justify-center"}`}
-              href={href}
-              key={href}
-              onClick={closeMobileNavigation}
-              title={expanded ? undefined : label}
-            >
-              <Icon className="h-[18px] w-[18px] shrink-0" />
-              {expanded && <span className="text-sm">{label}</span>}
-            </Link>
-          ))}
+          {DASHBOARD_NAVIGATION.map(({ label, href, icon: Icon }) => {
+            const isActive =
+              pathname === href ||
+              (href === "/feedback" && pathname === "/reviews") ||
+              (href === "/team-members" && pathname === "/team");
+            return (
+              <Link
+                aria-current={isActive ? "page" : undefined}
+                aria-label={label}
+                className={`flex h-10.5 w-full items-center gap-2 rounded-lg text-left transition ${isActive ? "bg-[#254350] text-white shadow-[inset_3px_0_#ef754b]" : "text-slate-400 hover:bg-white/5 hover:text-white"} ${expanded ? "px-4" : "justify-center"}`}
+                href={href}
+                key={href}
+                onClick={closeMobileNavigation}
+                title={expanded ? undefined : label}
+              >
+                <Icon className="h-[18px] w-[18px] shrink-0" />
+                {expanded && <span className="text-sm">{label}</span>}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* <div className="mt-auto border-t border-white/10 pt-4">

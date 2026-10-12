@@ -12,7 +12,12 @@ export default function DashboardHeader() {
   const pathname = usePathname();
   const { loggingOut, openMobileNavigation, signOut, ngoSetting } = useDashboardLayout();
   const user = useSelector((state) => state.auth.user);
-  const activePage = DASHBOARD_NAVIGATION.find(({ href }) => href === pathname);
+  const activePage = DASHBOARD_NAVIGATION.find(
+    ({ href }) =>
+      href === pathname ||
+      (href === "/feedback" && pathname === "/reviews") ||
+      (href === "/team-members" && pathname === "/team")
+  );
   const activeNav = activePage?.label || "Dashboard";
 
   return (
