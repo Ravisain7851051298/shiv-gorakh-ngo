@@ -22,7 +22,7 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import { contentApi, getContentImageUrl } from "@/lib/authApi";
-import { useDashboardLayout } from "@/components/dashboard/DashboardLayout";
+import { useDashboardLayout } from "../dashboard/DashboardLayout";
 
 function formatDate(dateString) {
   if (!dateString) return "—";
@@ -30,12 +30,12 @@ function formatDate(dateString) {
   return Number.isNaN(date.getTime())
     ? "—"
     : date.toLocaleDateString("en-IN", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 }
 
 function StarRating({ rating = 5, size = 16 }) {
@@ -329,11 +329,10 @@ export default function FeedbackManagement() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
-                activeTab === tab.id
+              className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${activeTab === tab.id
                   ? "bg-slate-900 text-white shadow-sm"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-              }`}
+                }`}
             >
               {tab.label} ({tab.count})
             </button>
@@ -430,15 +429,14 @@ export default function FeedbackManagement() {
                         <h3 className="font-bold text-slate-900 text-sm">{userName}</h3>
                         {/* Role Badge */}
                         <span
-                          className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                            userRole === "admin"
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${userRole === "admin"
                               ? "bg-slate-900 text-amber-300"
                               : userRole === "member"
-                              ? "bg-blue-100 text-blue-800"
-                              : userRole === "volunteer"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : "bg-amber-100 text-amber-800"
-                          }`}
+                                ? "bg-blue-100 text-blue-800"
+                                : userRole === "volunteer"
+                                  ? "bg-emerald-100 text-emerald-800"
+                                  : "bg-amber-100 text-amber-800"
+                            }`}
                         >
                           {userRole}
                         </span>
@@ -481,13 +479,12 @@ export default function FeedbackManagement() {
                   {/* Status Pill */}
                   <div className="flex items-center gap-2">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-bold ${
-                        item.status === "Approved"
+                      className={`rounded-full px-3 py-1 text-xs font-bold ${item.status === "Approved"
                           ? "bg-emerald-100 text-emerald-800"
                           : item.status === "Rejected"
-                          ? "bg-rose-100 text-rose-800"
-                          : "bg-amber-100 text-amber-800"
-                      }`}
+                            ? "bg-rose-100 text-rose-800"
+                            : "bg-amber-100 text-amber-800"
+                        }`}
                     >
                       {item.status}
                     </span>
