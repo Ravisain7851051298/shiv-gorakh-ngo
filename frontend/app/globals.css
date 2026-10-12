@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-orange: #e96a2c;
+  --color-brand-green: #244b3d;
+  --color-brand-cream: #fffaf4;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply m-0 bg-brand-cream font-sans text-stone-900 antialiased;
+  }
+
+  ::selection {
+    @apply bg-orange-200 text-stone-900;
+  }
+}
+
+/* ── Smooth Marquee Animations for 3-Row Infinite Hero & Cards ── */
+@keyframes marquee-ltr {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+@keyframes marquee-rtl {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-ltr {
+  display: flex;
+  width: max-content;
+  animation: marquee-ltr 42s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl {
+  display: flex;
+  width: max-content;
+  animation: marquee-rtl 42s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-ltr-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee-ltr 55s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee-rtl 50s linear infinite;
+  will-change: transform;
+}
+
+.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+/* ── 3D & Depth Utilities ── */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1500 {
+  perspective: 1500px;
+}
+
+.transform-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}

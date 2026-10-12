@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:8000
+@accessToken = replace-with-access-token
+
+### Register the authenticated user as a member
+POST {{baseUrl}}/membership/register
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "address": "123 Example Street",
+  "city": "San Francisco",
+  "state": "California",
+  "zipCode": "94103",
+  "membershipType": "Basic",
+  "startDate": "2026-10-07T00:00:00.000Z",
+  "endDate": "2027-10-07T00:00:00.000Z"
+}
+
+### Get the signed-in user's membership profile
+GET {{baseUrl}}/api/v1/membership/me
+Authorization: Bearer {{accessToken}}
+
+### Update the signed-in user's membership profile (member role required)
+PATCH {{baseUrl}}/api/v1/membership/me
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "membershipType": "Premium",
+  "endDate": "2027-10-07T00:00:00.000Z"
+}
+
+### Delete the signed-in user's membership profile (member role required)
+DELETE {{baseUrl}}/api/v1/membership/me
+Authorization: Bearer {{accessToken}}
