@@ -150,6 +150,16 @@ function createContentController({ Model, singular, plural, folderName, fields, 
         }
       }
     }
+    if (payload && payload.features !== undefined) {
+      if (typeof payload.features === 'string') {
+        try {
+          const parsed = JSON.parse(payload.features);
+          payload.features = Array.isArray(parsed) ? parsed : [payload.features];
+        } catch {
+          payload.features = payload.features.split(/\r?\n|,/).map((f) => f.trim()).filter(Boolean);
+        }
+      }
+    }
   }
 
   async function create(req, res, next) {

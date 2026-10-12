@@ -1,4 +1,5 @@
 import {
+  FiActivity,
   FiAlertCircle,
   FiAward,
   FiBookOpen,
@@ -26,6 +27,7 @@ export const DASHBOARD_BRAND = {
 export const DASHBOARD_NAVIGATION = [
   { label: "Dashboard", href: "/dashboard", icon: FiGrid },
   { label: "Donations", href: "/donation", icon: FiCreditCard },
+  { label: "Our Services", href: "/services", icon: FiActivity },
   { label: "Volunteer", href: "/volunteer", icon: FiUserPlus },
   { label: "Members", href: "/members", icon: FiUsers },
   { label: "Team Members", href: "/team-members", icon: FiUserCheck },
@@ -164,6 +166,21 @@ export const CONTENT_COLLECTIONS = {
       { name: "tagline", label: "Tagline / Short Subtitle", type: "text", placeholder: "e.g. Transforming distress into safety and lifelong compassion" },
       { name: "points", label: "Key Pillars / Highlights (comma or newline separated)", type: "text", placeholder: "e.g. 24/7 Rescue, Free Medical Care, Anti-Rabies Drives" },
       { name: "order", label: "Display Priority / Order", type: "number", placeholder: "e.g. 1, 2, 3..." },
+      { name: "status", label: "Status", type: "select", options: ["Active", "Draft"] },
+    ],
+  },
+  services: {
+    title: "Our Services",
+    itemLabel: "service",
+    addLabel: "service",
+    description: "Create and manage foundation services, rescue operations, and welfare facilities.",
+    stateKey: "services",
+    dateField: false,
+    imagesRequired: false,
+    customFields: [
+      { name: "category", label: "Service Category", type: "text", placeholder: "e.g. Emergency Trauma & Rescue" },
+      { name: "features", label: "Key Highlights / Features (comma or newline separated)", type: "text", placeholder: "e.g. 24/7 Rapid Transit, On-Board Oxygen, Trained Handlers" },
+      { name: "order", label: "Display Priority / Order", type: "number", placeholder: "e.g. 1" },
       { name: "status", label: "Status", type: "select", options: ["Active", "Draft"] },
     ],
   },

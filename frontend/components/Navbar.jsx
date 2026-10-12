@@ -36,7 +36,7 @@ import {
 
 const primaryLinks = [
   { label: "Home", href: "/", icon: FiHome },
-  { label: "Campaigns", href: "/campaigns", icon: FiTarget },
+  { label: "Campaign", href: "/campaigns", icon: FiTarget },
 ];
 
 const aboutUsLinks = [
@@ -48,6 +48,7 @@ const aboutUsLinks = [
 ];
 
 const pageLinks = [
+  { label: "Our Services", href: "/our-services", icon: FiActivity, desc: "24/7 rescue & medical care" },
   { label: "Programs & Drives", href: "/programs", icon: FiGrid, desc: "Active welfare programs" },
   { label: "News & Blogs", href: "/news", icon: FiBook, desc: "Latest updates" },
   { label: "Testimonials", href: "/reviews", icon: FiStar, desc: "Community voices" },
@@ -348,7 +349,7 @@ export default function Navbar() {
             ))}
 
             <DropdownMenu
-              label="About Us"
+              label="About"
               items={aboutUsLinks}
               isOpen={openDropdown === "about"}
               onOpen={() => openDrop("about")}
@@ -368,7 +369,7 @@ export default function Navbar() {
             />
 
             <DropdownMenu
-              label="Join Us"
+              label="Join"
               items={joinLinks}
               isOpen={openDropdown === "join"}
               onOpen={() => openDrop("join")}

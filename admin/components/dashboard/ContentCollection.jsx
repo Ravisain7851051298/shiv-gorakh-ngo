@@ -37,12 +37,14 @@ import { deleteBlog, fetchBlogs, updateBlog, createBlog } from "@/store/blogsSli
 import { deleteCampaign, fetchCampaigns, updateCampaign, createCampaign } from "@/store/campaignsSlice";
 import { deleteCertificate, fetchCertificates, updateCertificate, createCertificate } from "@/store/certificatesSlice";
 import { deleteMissionVision, fetchMissionVisions, updateMissionVision, createMissionVision } from "@/store/missionVisionSlice";
+import { deleteService, fetchServices, updateService, createService } from "@/store/servicesSlice";
 
 const resourceActions = {
   events: { fetchAll: fetchEvents, create: createEvent, update: updateEvent, remove: deleteEvent },
   galleries: { fetchAll: fetchGalleries, create: createGallery, update: updateGallery, remove: deleteGallery },
   stories: { fetchAll: fetchStories, create: createStory, update: updateStory, remove: deleteStory },
   programs: { fetchAll: fetchPrograms, create: createProgram, update: updateProgram, remove: deleteProgram },
+  services: { fetchAll: fetchServices, create: createService, update: updateService, remove: deleteService },
   blogs: { fetchAll: fetchBlogs, create: createBlog, update: updateBlog, remove: deleteBlog },
   campaigns: { fetchAll: fetchCampaigns, create: createCampaign, update: updateCampaign, remove: deleteCampaign },
   certificates: { fetchAll: fetchCertificates, create: createCertificate, update: updateCertificate, remove: deleteCertificate },

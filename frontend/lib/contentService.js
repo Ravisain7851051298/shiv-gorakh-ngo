@@ -326,4 +326,41 @@ export async function getTeamMembers(params = {}) {
   }
 }
 
+// Our Services
+export async function getServices(params = { page: 1, limit: 50 }) {
+  try {
+    const { data } = await api.get("/api/v1/services/all", { params });
+    return {
+      success: true,
+      items: data?.services || data?.data?.services || [],
+      pagination: data?.pagination || null,
+    };
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    return {
+      success: false,
+      items: [],
+      error: error.response?.data?.message || error.message || "Failed to load services",
+    };
+  }
+}
+
+export async function getServiceById(id) {
+  try {
+    const { data } = await api.get(`/api/v1/services/${id}`);
+    return {
+      success: true,
+      item: data?.service || data?.data || null,
+    };
+  } catch (error) {
+    console.error(`Error fetching service ${id}:`, error);
+    return {
+      success: false,
+      item: null,
+      error: error.response?.data?.message || error.message,
+    };
+  }
+}
+
+
 

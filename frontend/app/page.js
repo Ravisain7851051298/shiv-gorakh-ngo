@@ -4,6 +4,7 @@ import GetInvolvedSection from "../components/home/GetInvolvedSection";
 import HomeHero from "@/components/home/HomeHero";
 import MissionVisionSection from "@/components/home/MissionVisionSection";
 import InitiativesSection from "../components/home/InitiativesSection";
+import ServicesSection from "../components/home/ServicesSection";
 import MediaSection from "../components/home/MediaSection";
 import TrustProof from "../components/home/TrustProof";
 import DonorSection from "@/components/home/TopDonations";
@@ -38,6 +39,7 @@ export default function Home() {
         <HomeHero />
         <AboutSection />
         {/* <MissionVisionSection /> */}
+        <ServicesSection />
         <InitiativesSection />
         <TrustProof />
         <DonorSection />

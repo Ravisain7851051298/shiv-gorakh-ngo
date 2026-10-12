@@ -18,6 +18,8 @@ const allowedOrigins = [
   "https://lemonchiffon-walrus-147318.hostingersite.com",
   "https://shivgorakh.org.in",
   "https://www.shivgorakh.org.in",
+  "http://localhost:3001",
+  "http://localhost:3000",
 ];
 
 
@@ -66,6 +68,7 @@ const feedbackRoutes = require("./routes/feedback.route");
 const missionVisionRoutes = require("./routes/mission-vision.route");
 const complaintRoutes = require("./routes/complaint.route");
 const teamMemberRoutes = require("./routes/team-member.route");
+const serviceRoutes = require("./routes/service.route");
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/admin", adminRoutes);
@@ -103,6 +106,9 @@ app.use("/api/v1/team-members", teamMemberRoutes);
 app.use("/api/v1/team-member", teamMemberRoutes);
 app.use("/api/v1/team", teamMemberRoutes);
 app.use("/api/v1/teams", teamMemberRoutes);
+app.use("/api/v1/services", serviceRoutes);
+app.use("/api/v1/service", serviceRoutes);
+app.use("/api/v1/our-services", serviceRoutes);
 
 // ================================
 // 404 Handler

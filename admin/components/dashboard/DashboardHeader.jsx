@@ -16,7 +16,8 @@ export default function DashboardHeader() {
     ({ href }) =>
       href === pathname ||
       (href === "/feedback" && pathname === "/reviews") ||
-      (href === "/team-members" && pathname === "/team")
+      (href === "/team-members" && pathname === "/team") ||
+      (href === "/services" && pathname === "/our-services")
   );
   const activeNav = activePage?.label || "Dashboard";
 

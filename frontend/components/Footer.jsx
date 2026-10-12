@@ -224,6 +224,9 @@ export default function Footer() {
               Initiatives &amp; Media
             </h2>
             <nav className="flex flex-col space-y-2 text-xs text-stone-300" aria-label="Initiatives links">
+              <Link className="hover:text-orange-200 hover:translate-x-0.5 transition-all text-amber-300 font-semibold" href="/our-services">
+                Our services &amp; rescue
+              </Link>
               <Link className="hover:text-orange-200 hover:translate-x-0.5 transition-all" href="/programs">
                 Welfare programs
               </Link>

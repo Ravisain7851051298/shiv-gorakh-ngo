@@ -8,6 +8,7 @@ import blogReducer from "@/store/blogsSlice";
 import campaignReducer from "@/store/campaignsSlice";
 import certificateReducer from "@/store/certificatesSlice";
 import missionVisionReducer from "@/store/missionVisionSlice";
+import serviceReducer from "@/store/servicesSlice";
 import { membershipReducer, volunteerReducer } from "@/store/profilesSlice";
 import { installAuthInterceptors } from "@/lib/authApi";
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     galleries: galleryReducer,
     stories: storyReducer,
     programs: programReducer,
+    services: serviceReducer,
     blogs: blogReducer,
     campaigns: campaignReducer,
     certificates: certificateReducer,

@@ -44,7 +44,8 @@ export default function Sidebar() {
             const isActive =
               pathname === href ||
               (href === "/feedback" && pathname === "/reviews") ||
-              (href === "/team-members" && pathname === "/team");
+              (href === "/team-members" && pathname === "/team") ||
+              (href === "/services" && pathname === "/our-services");
             return (
               <Link
                 aria-current={isActive ? "page" : undefined}

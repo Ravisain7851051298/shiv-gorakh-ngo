@@ -4,8 +4,7 @@ const authBaseUrl = (
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1"
 ).replace(/\/+$/, "");
 const contentBaseUrl = (
-  process.env.NEXT_PUBLIC_CONTENT_API_URL ||
-  "http://localhost:8000/api/v1"
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1"
 ).replace(/\/+$/, "");
 const apiBaseUrl = authBaseUrl.endsWith("/admin")
   ? authBaseUrl
