@@ -11,12 +11,16 @@ const app = express();
 // Middleware
 // ================================
 
+const allowedOrigins = [
+  "https://darkturquoise-nightingale-537304.hostingersite.com",
+  "https://lemonchiffon-walrus-147318.hostingersite.com",
+  "https://shivgorakh.org.in",
+  "https://www.shivgorakh.org.in",
+];
+
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL || "http://localhost:3000",
-      process.env.DASHBOARD_URL || "http://localhost:3001",
-    ],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
