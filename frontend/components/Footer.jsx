@@ -393,9 +393,9 @@ export default function Footer() {
             </Link>
             <span>•</span>
             <span>
-              This website is designed and developed by
+              Designed & Maintained By{" "}
               <Link href="https://zdctechglobalsolutions.com" target="_blank" rel="noopener noreferrer" className="hover:text-orange-200 transition">
-                Z.D.C. TECH GLOBAL SOLUTION
+                ZDC Tech Global Solutions
               </Link>
             </span>
           </div>

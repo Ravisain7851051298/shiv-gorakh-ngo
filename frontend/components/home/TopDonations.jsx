@@ -108,10 +108,8 @@ export default function DonorSection() {
     let isMounted = true;
     async function fetchTopContributors() {
       try {
-        const baseUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-        const cleanUrl = baseUrl.replace(/\/+$/, "");
-        const res = await fetch(`${cleanUrl}/donations/top-contributors`, {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+        const res = await fetch(`${baseUrl}/api/v1/donations/top-contributors`, {
           cache: "no-store",
         });
         const json = await res.json();
@@ -307,51 +305,48 @@ export default function DonorSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, delay: index * 0.08 }}
-                  className={`group relative flex flex-col items-center text-center rounded-2xl sm:rounded-3xl border p-5 sm:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${
-                    isGold
-                      ? "border-amber-300/90 bg-gradient-to-b from-amber-50/80 via-white to-amber-50/30 shadow-md shadow-amber-500/10 hover:border-amber-400"
-                      : isSilver
+                  className={`group relative flex flex-col items-center text-center rounded-2xl sm:rounded-3xl border p-5 sm:p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${isGold
+                    ? "border-amber-300/90 bg-gradient-to-b from-amber-50/80 via-white to-amber-50/30 shadow-md shadow-amber-500/10 hover:border-amber-400"
+                    : isSilver
                       ? "border-stone-200/90 bg-gradient-to-b from-stone-50/80 via-white to-stone-50/30 shadow-sm hover:border-stone-400"
                       : isBronze
-                      ? "border-orange-200/90 bg-gradient-to-b from-orange-50/80 via-white to-orange-50/30 shadow-sm hover:border-orange-400"
-                      : "border-stone-200/80 bg-white shadow-2xs hover:border-orange-300"
-                  }`}
+                        ? "border-orange-200/90 bg-gradient-to-b from-orange-50/80 via-white to-orange-50/30 shadow-sm hover:border-orange-400"
+                        : "border-stone-200/80 bg-white shadow-2xs hover:border-orange-300"
+                    }`}
                 >
                   {/* Top Rank Medallion Ribbon */}
                   <div className="mb-4">
                     <span
-                      className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-black tracking-wide shadow-2xs ${
-                        isGold
-                          ? "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-stone-950 ring-2 ring-amber-300/50"
-                          : isSilver
+                      className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-black tracking-wide shadow-2xs ${isGold
+                        ? "bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-stone-950 ring-2 ring-amber-300/50"
+                        : isSilver
                           ? "bg-gradient-to-r from-stone-200 to-stone-400 text-stone-900 ring-2 ring-stone-300/50"
                           : isBronze
-                          ? "bg-gradient-to-r from-orange-300 via-amber-500 to-amber-600 text-white ring-2 ring-orange-300/50"
-                          : "bg-stone-100 text-stone-700 border border-stone-200"
-                      }`}
+                            ? "bg-gradient-to-r from-orange-300 via-amber-500 to-amber-600 text-white ring-2 ring-orange-300/50"
+                            : "bg-stone-100 text-stone-700 border border-stone-200"
+                        }`}
                     >
                       {isGold
                         ? "👑 Rank #1"
                         : isSilver
-                        ? "🥈 Rank #2"
-                        : isBronze
-                        ? "🥉 Rank #3"
-                        : `⭐ Rank #${rank}`}
+                          ? "🥈 Rank #2"
+                          : isBronze
+                            ? "🥉 Rank #3"
+                            : `⭐ Rank #${rank}`}
                     </span>
                   </div>
 
                   {/* Profile Picture with Ring & Check Badge */}
                   <div className="relative mb-3.5 size-16 sm:size-18 shrink-0">
                     <div
-                      className={`size-full overflow-hidden rounded-full border-2 bg-stone-100 shadow-sm transition-transform duration-300 group-hover:scale-105 ${
-                        isGold
-                          ? "border-amber-400 ring-4 ring-amber-100"
-                          : isSilver
+                      className={`size-full overflow-hidden rounded-full border-2 bg-stone-100 shadow-sm transition-transform duration-300 group-hover:scale-105 ${isGold
+                        ? "border-amber-400 ring-4 ring-amber-100"
+                        : isSilver
                           ? "border-stone-300 ring-4 ring-stone-100"
                           : isBronze
-                          ? "border-orange-300 ring-4 ring-orange-100"
-                          : "border-stone-200 ring-2 ring-stone-100"
-                      }`}
+                            ? "border-orange-300 ring-4 ring-orange-100"
+                            : "border-stone-200 ring-2 ring-stone-100"
+                        }`}
                     >
                       {avatarUrl ? (
                         <img
@@ -393,9 +388,8 @@ export default function DonorSection() {
                   </h4>
 
                   <span
-                    className={`mt-1.5 inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider truncate max-w-full ${
-                      donor.badge || "bg-emerald-50 text-emerald-800 border-emerald-200"
-                    }`}
+                    className={`mt-1.5 inline-block rounded-full border px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider truncate max-w-full ${donor.badge || "bg-emerald-50 text-emerald-800 border-emerald-200"
+                      }`}
                   >
                     {donor.tag || "Generous Donor"}
                   </span>
