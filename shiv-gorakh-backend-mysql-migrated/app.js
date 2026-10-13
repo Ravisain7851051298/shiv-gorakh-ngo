@@ -13,19 +13,32 @@ const app = express();
 
 
 const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.DASHBOARD_URL,
   "https://darkturquoise-nightingale-537304.hostingersite.com",
   "https://admin.shivgorakh.org.in",
   "https://lemonchiffon-walrus-147318.hostingersite.com",
   "https://shivgorakh.org.in",
   "https://www.shivgorakh.org.in",
+  "https://api.shivgorakh.org.in",
   "http://localhost:3001",
   "http://localhost:3000",
-];
-
+].filter(Boolean);
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      const clean = origin.replace(/\/+$/, '');
+      if (
+        allowedOrigins.some((o) => o.replace(/\/+$/, '') === clean) ||
+        clean.endsWith('.shivgorakh.org.in') ||
+        clean.endsWith('.hostingersite.com')
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );

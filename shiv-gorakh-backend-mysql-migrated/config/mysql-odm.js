@@ -295,6 +295,12 @@ class ModelInstance {
     Object.assign(this, data);
     this.$originalPassword = data.password;
   }
+  get id() {
+    return this._id ? String(this._id) : undefined;
+  }
+  set id(v) {
+    this._id = v != null ? String(v) : v;
+  }
   isModified(key) {
     if (key === 'password') {
       if (!this.password) return false;
@@ -306,6 +312,10 @@ class ModelInstance {
     const o = {};
     for (const k of Object.keys(this)) {
       if (!k.startsWith('$')) o[k] = plain(this[k]);
+    }
+    if (this._id != null) {
+      o._id = String(this._id);
+      o.id = String(this._id);
     }
     return o;
   }

@@ -18,8 +18,10 @@ function requireSecret(secret, name) {
 }
 
 function publicUser(user) {
+    const userId = (user._id || user.id)?.toString();
     return {
-        id: (user._id || user.id).toString(),
+        id: userId,
+        _id: userId,
         name: user.name,
         email: user.email,
         phone: user.phone || '',
@@ -30,7 +32,8 @@ function publicUser(user) {
 }
 
 function issueTokens(user) {
-    const claims = { id: user.id, role: user.role };
+    const userId = (user._id || user.id)?.toString();
+    const claims = { id: userId, role: user.role };
     return {
         accessToken: jwt.sign(
             { ...claims, tokenType: 'access', jti: crypto.randomUUID() },

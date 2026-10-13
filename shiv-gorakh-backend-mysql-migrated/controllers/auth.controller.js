@@ -30,7 +30,12 @@ function loginAdmin(req, res, next) {
 }
 
 async function refresh(req, res, next, requiredRole) {
-  if (!req.cookies?.refreshToken) {
+  const token =
+    req.cookies?.refreshToken ||
+    req.body?.refreshToken ||
+    req.headers['x-refresh-token'];
+
+  if (!token) {
     res.clearCookie('refreshToken', refreshCookieOptions);
     return res.status(401).json({
       success: false,
@@ -39,7 +44,7 @@ async function refresh(req, res, next, requiredRole) {
   }
   try {
     const result = await authService.refresh({
-      refreshToken: req.cookies?.refreshToken,
+      refreshToken: token,
     }, requiredRole);
     sendTokenResponse(res, 200, 'Tokens refreshed successfully', result);
   } catch (error) {
