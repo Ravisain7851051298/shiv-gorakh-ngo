@@ -55,8 +55,12 @@ async function login({ email, password } = {}, requiredRole) {
   if (!user || !(await user.comparePassword(password))) {
     throw createError('Invalid email or password', 401);
   }
-  if (requiredRole && user.role !== requiredRole) {
-    throw createError('Invalid email or password', 401);
+  if (requiredRole) {
+    const userRole = String(user.role || '').trim().toLowerCase();
+    const targetRole = String(requiredRole || '').trim().toLowerCase();
+    if (userRole !== targetRole && userRole !== 'superadmin' && userRole !== 'admin') {
+      throw createError('Invalid email or password', 401);
+    }
   }
 
   return { user: publicUser(user), ...issueTokens(user) };
@@ -72,8 +76,12 @@ async function refresh({ refreshToken } = {}, requiredRole) {
   if (!user) {
     throw createError('User not found', 401);
   }
-  if (requiredRole && user.role !== requiredRole) {
-    throw createError('Invalid or expired refresh token', 401);
+  if (requiredRole) {
+    const userRole = String(user.role || '').trim().toLowerCase();
+    const targetRole = String(requiredRole || '').trim().toLowerCase();
+    if (userRole !== targetRole && userRole !== 'superadmin' && userRole !== 'admin') {
+      throw createError('Invalid or expired refresh token', 401);
+    }
   }
 
   const tokens = issueTokens(user);

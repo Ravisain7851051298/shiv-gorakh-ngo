@@ -1,11 +1,18 @@
-const refreshCookieOptions = require('../constants/cookie.constents');
+const cookieConstants = require('../constants/cookie.constents');
+const refreshCookieOptions = cookieConstants.refreshCookieOptions || cookieConstants;
+const getRefreshCookieOptions = cookieConstants.getRefreshCookieOptions || (() => refreshCookieOptions);
 
-function sendTokenResponse(res, status, message, result) {
-  const { refreshToken, ...response } = result;
-  res.cookie('refreshToken', refreshToken, refreshCookieOptions);
+function sendTokenResponse(res, status, message, result, passedReq) {
+  const { refreshToken, ...response } = result || {};
+  const req = passedReq || res?.req;
+  const cookieOpts = req ? getRefreshCookieOptions(req) : refreshCookieOptions;
+  if (refreshToken) {
+    res.cookie('refreshToken', refreshToken, cookieOpts);
+  }
   return res.status(status).json({
     success: true,
     message,
+    refreshToken,
     ...response,
   });
 }

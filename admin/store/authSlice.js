@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { api } from "@/lib/authApi";
+import { api, executeRefreshToken } from "@/lib/authApi";
 
 function errorMessage(error) {
   return error.response?.data?.message || error.message || "Unable to complete the request.";
@@ -18,6 +18,9 @@ function validateSession(data) {
 export const adminLogin = createAsyncThunk("auth/adminLogin", async (credentials, { rejectWithValue }) => {
   try {
     const { data } = await api.post("/login", credentials);
+    if (typeof window !== "undefined" && data?.refreshToken) {
+      window.localStorage.setItem("admin_refresh_token", data.refreshToken);
+    }
     return validateSession(data);
   } catch (error) {
     return rejectWithValue(errorMessage(error));
@@ -29,6 +32,9 @@ export const adminRegister = createAsyncThunk("auth/adminRegister", async ({ adm
     const { data } = await api.post("/register", details, {
       headers: { "x-admin-secret-key": adminSecret },
     });
+    if (typeof window !== "undefined" && data?.refreshToken) {
+      window.localStorage.setItem("admin_refresh_token", data.refreshToken);
+    }
     return validateSession(data);
   } catch (error) {
     return rejectWithValue(errorMessage(error));
@@ -37,7 +43,7 @@ export const adminRegister = createAsyncThunk("auth/adminRegister", async ({ adm
 
 export const refreshSession = createAsyncThunk("auth/refreshSession", async (_, { rejectWithValue }) => {
   try {
-    const { data } = await api.post("/refresh-token");
+    const data = await executeRefreshToken();
     return validateSession(data);
   } catch (error) {
     return rejectWithValue(errorMessage(error));
@@ -46,6 +52,9 @@ export const refreshSession = createAsyncThunk("auth/refreshSession", async (_, 
 
 export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
   try {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("admin_refresh_token");
+    }
     await api.post("/logout");
   } catch (error) {
     return rejectWithValue(errorMessage(error));
@@ -104,6 +113,9 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.initialized = true;
       state.loading = false;
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem("admin_refresh_token");
+      }
     },
   },
   extraReducers(builder) {

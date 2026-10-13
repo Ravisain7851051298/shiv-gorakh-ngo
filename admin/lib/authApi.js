@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const authBaseUrl = (
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1"
+  process.env.NEXT_PUBLIC_API_URL || "https://api.shivgorakh.org.in/api/v1"
 ).replace(/\/+$/, "");
 const contentBaseUrl = (
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1"
+  process.env.NEXT_PUBLIC_API_URL || "https://api.shivgorakh.org.in/api/v1"
 ).replace(/\/+$/, "");
 const apiBaseUrl = authBaseUrl.endsWith("/admin")
   ? authBaseUrl
@@ -36,11 +36,62 @@ function errorMessage(error) {
   return error.response?.data?.message || error.message || "The request failed.";
 }
 
+export function executeRefreshToken() {
+  if (!refreshRequest) {
+    const headers = {};
+    if (typeof window !== "undefined") {
+      const storedRefreshToken = window.localStorage.getItem("admin_refresh_token");
+      if (storedRefreshToken) {
+        headers["x-refresh-token"] = storedRefreshToken;
+      }
+    }
+
+    refreshRequest = api
+      .post("/refresh-token", {}, { headers })
+      .then(({ data }) => {
+        if (
+          data?.success === false ||
+          !data?.user ||
+          typeof data.accessToken !== "string" ||
+          !data.accessToken
+        ) {
+          throw new Error(data?.message || "The authentication server returned an invalid session.");
+        }
+        if (typeof window !== "undefined" && data?.refreshToken) {
+          window.localStorage.setItem("admin_refresh_token", data.refreshToken);
+        }
+        if (authStore) {
+          authStore.dispatch({ type: "auth/setSession", payload: data });
+        }
+        return data;
+      })
+      .catch((refreshError) => {
+        if (typeof window !== "undefined") {
+          window.localStorage.removeItem("admin_refresh_token");
+        }
+        if (authStore) {
+          authStore.dispatch({ type: "auth/clearSession" });
+        }
+        throw new Error(errorMessage(refreshError));
+      })
+      .finally(() => {
+        refreshRequest = null;
+      });
+  }
+  return refreshRequest;
+}
+
 function installClientInterceptors(client) {
   client.interceptors.request.use((config) => {
     const accessToken = authStore?.getState().auth.accessToken;
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    if (typeof window !== "undefined") {
+      const storedRefreshToken = window.localStorage.getItem("admin_refresh_token");
+      if (storedRefreshToken && !config.headers["x-refresh-token"]) {
+        config.headers["x-refresh-token"] = storedRefreshToken;
+      }
     }
     return config;
   });
@@ -53,7 +104,10 @@ function installClientInterceptors(client) {
       const isRefreshCall = /\/refresh-token(?:\?|$)/.test(requestUrl);
       const isAuthEntryRequest = /\/(?:login|register)(?:\?|$)/.test(requestUrl);
       if (error.response?.status === 401 && request?._retry) {
-        authStore.dispatch({ type: "auth/clearSession" });
+        if (typeof window !== "undefined") {
+          window.localStorage.removeItem("admin_refresh_token");
+        }
+        authStore?.dispatch({ type: "auth/clearSession" });
         return Promise.reject(error);
       }
       if (
@@ -68,32 +122,8 @@ function installClientInterceptors(client) {
 
       request._retry = true;
       try {
-        if (!refreshRequest) {
-          refreshRequest = api
-            .post("/refresh-token")
-            .then(({ data }) => {
-              if (
-                data?.success === false ||
-                !data?.user ||
-                typeof data.accessToken !== "string" ||
-                !data.accessToken
-              ) {
-                throw new Error(data?.message || "The authentication server returned an invalid session.");
-              }
-              authStore.dispatch({ type: "auth/setSession", payload: data });
-              return data.accessToken;
-            })
-            .catch((refreshError) => {
-              authStore.dispatch({ type: "auth/clearSession" });
-              throw new Error(errorMessage(refreshError));
-            })
-            .finally(() => {
-              refreshRequest = null;
-            });
-        }
-
-        const accessToken = await refreshRequest;
-        request.headers.Authorization = `Bearer ${accessToken}`;
+        const sessionData = await executeRefreshToken();
+        request.headers.Authorization = `Bearer ${sessionData.accessToken}`;
         return client(request);
       } catch (refreshError) {
         return Promise.reject(refreshError);

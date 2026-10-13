@@ -1,12 +1,14 @@
 const authService = require('../services/auth.services');
-const refreshCookieOptions = require('../constants/cookie.constents');
+const cookieConstants = require('../constants/cookie.constents');
+const refreshCookieOptions = cookieConstants.refreshCookieOptions || cookieConstants;
+const getRefreshCookieOptions = cookieConstants.getRefreshCookieOptions || (() => refreshCookieOptions);
 const { UserRole } = require('../constants/app.constants');
 const { sendTokenResponse, handleAuthError } = require('../utils/auth-response.util');
 
 async function registerUser(req, res, next) {
   try {
     const result = await authService.register(req.body);
-    sendTokenResponse(res, 201, 'User registered successfully', result);
+    sendTokenResponse(res, 201, 'User registered successfully', result, req);
   } catch (error) {
     handleAuthError(error, next);
   }
@@ -15,7 +17,7 @@ async function registerUser(req, res, next) {
 async function login(req, res, next, requiredRole) {
   try {
     const result = await authService.login(req.body, requiredRole);
-    sendTokenResponse(res, 200, 'Login successful', result);
+    sendTokenResponse(res, 200, 'Login successful', result, req);
   } catch (error) {
     handleAuthError(error, next);
   }
@@ -35,8 +37,10 @@ async function refresh(req, res, next, requiredRole) {
     req.body?.refreshToken ||
     req.headers['x-refresh-token'];
 
+  const cookieOpts = getRefreshCookieOptions(req);
+
   if (!token) {
-    res.clearCookie('refreshToken', refreshCookieOptions);
+    res.clearCookie('refreshToken', cookieOpts);
     return res.status(401).json({
       success: false,
       message: 'Refresh token is required',
@@ -46,13 +50,13 @@ async function refresh(req, res, next, requiredRole) {
     const result = await authService.refresh({
       refreshToken: token,
     }, requiredRole);
-    sendTokenResponse(res, 200, 'Tokens refreshed successfully', result);
+    sendTokenResponse(res, 200, 'Tokens refreshed successfully', result, req);
   } catch (error) {
     if (error.status === 400 || error.status === 401) {
-      res.clearCookie('refreshToken', refreshCookieOptions);
+      res.clearCookie('refreshToken', cookieOpts);
       return res.status(401).json({
         success: false,
-        message: 'Refresh token is invalid or expired',
+        message: error.message || 'Refresh token is invalid or expired',
       });
     }
     handleAuthError(error, next);
@@ -75,7 +79,8 @@ async function logoutUser(req, res, next) {
       req.cookies?.refreshToken,
       req.user.id,
     );
-    res.clearCookie('refreshToken', refreshCookieOptions);
+    const cookieOpts = getRefreshCookieOptions(req);
+    res.clearCookie('refreshToken', cookieOpts);
     res.status(200).json({
       success: true,
       message: 'Logged out successfully',
